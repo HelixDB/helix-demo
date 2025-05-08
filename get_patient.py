@@ -4,11 +4,11 @@ from helix.types import Payload
 from typing import List
 
 class get_patient(Query):
-    def __init__(self, patient_id: str):
+    def __init__(self, name: str):
         super().__init__()
-        self.patient_id = patient_id
+        self.name = name
     def query(self) -> List[Payload]:
-        return [{ "patient_id": self.patient_id }]
+        return [{ "name": self.name }]
     def response(self, response): return response
 
 if __name__ == "__main__":

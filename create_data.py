@@ -2,36 +2,31 @@ import helix
 from helix.client import Query
 from helix.types import Payload
 import csv
-from typing import List, Tuple
+from typing import List
 
-class create_doctor(Query):
-    def __init__(self, doctors: List[Tuple[str, str]]):
+class create_data(Query):
+    def __init__(
+        self,
+        doctor_name: str,
+        doctor_city: str,
+        patient_name: str,
+        patient_age: int,
+        summary: str,
+    ):
         super().__init__()
-        self.doctors = doctors
-    def query(self) -> List[Payload]:
-        docs_payload = []
-        for name, city in self.doctors:
-            docs_payload.append({ "name": name, "city": city })
-        return [{ "doctors": docs_payload }]
-    def response(self, response): return response
-
-class create_patient(Query):
-    def __init__(self, name: str, age: int):
-        super().__init__()
-        self.name = name
-        self.age = age
-    def query(self) -> List[Payload]:
-        return [{ "name": self.name, "age": self.age }]
-    def response(self, response): return response
-
-class create_visit(Query):
-    def __init__(self, pat_id: str, doc_id: str, summary: str):
-        super().__init__()
-        self.pat_id = pat_id
-        self.doc_id = doc_id
+        self.doctor_name = doctor_name
+        self.doctor_city = doctor_city
+        self.patient_name = patient_name
+        self.patient_age = patient_age
         self.summary = summary
     def query(self) -> List[Payload]:
-        return [{ "patient_id": self.pat_id, "doctor_id": self.doc_id, "summary": self.summary }]
+        return [{
+            "doctor_name": self.doctor_name,
+            "doctor_city": self.doctor_city,
+            "patient_name": self.patient_name,
+            "patient_age": self.patient_age,
+            "summary": self.summary
+        }]
     def response(self, response): return response
 
 def read_patient_records(file_path):
@@ -61,18 +56,12 @@ if __name__ == "__main__":
 
     file_path = "patients.csv"
     patients = read_patient_records(file_path)
-    doctors = [] # (name, city)
     for patient in patients:
+        db.query(create_data(patient[2], patient[1], patient[0], patient[3], patient[4]))
+
         print(f"Patient Name: {patient[0]}")
         print(f"Hospital City: {patient[1]}")
         print(f"Doctor Name: {patient[2]}")
         print(f"Age: {patient[3]}")
         print(f"Consultation Description: {patient[4]}")
         print("-" * 50)
-
-        doctors.append((patient[2],patient[1]))
-
-        db.query(create_patient(patient[0], patient[3]))
-        db.query(create_visit(patient[0], patient[2], patient[4]))
-
-    db.query(create_doctor(doctors))

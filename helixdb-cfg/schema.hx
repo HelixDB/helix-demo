@@ -1,6 +1,6 @@
 N::Patient {
     name: String,
-    age: I32
+    age: I64
 }
 
 N::Doctor {
@@ -13,6 +13,6 @@ E::Visit {
     To: Doctor,
     Properties: {
         doctors_summary: String,
-        date: I32
+        date: I64
     }
 }
