@@ -1,25 +1,23 @@
 // ------------------
 // Create Data
 // ------------------
-QUERY createdoctor(doctors: [{ name: String, city: String }]) =>
-    FOR {name, city} IN doctors {
-        AddN<Doctor>({
-            name: name,
-            city: city
-        })
-    }
-    RETURN "Doctors created"
+QUERY createdoctor(name: String, city: String) =>
+    doctor <- AddN<Doctor>({
+        name: name,
+        city: city
+    })
+    RETURN doctor
 
 QUERY create_patient(name: String, age: I32) =>
-    AddN<Patient>({
+    patient <- AddN<Patient>({
         name: name,
         age: age
     })
-    RETURN "Patient created"
+    RETURN patient
 
 QUERY create_visit(patient_id: String, doctor_id: String, summary: String) =>
-    AddE<Visit>({doctors_summary: summary})::From(patient_id)::To(doctor_id)
-    RETURN "Visit created"
+    visit <- AddE<Visit>({doctors_summary: summary})::From(patient_id)::To(doctor_id)
+    RETURN visit
 
 // ------------------
 // Fetch Data

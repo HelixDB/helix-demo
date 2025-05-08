@@ -92,3 +92,33 @@ QUERY get_visit_by_date(patient_id: String, date: I32) {
     RETURN visit
 }
 ```
+
+
+# Run Queries
+
+> cd into `helix-demo` if you haven't already
+```bash
+helix deploy --local
+```
+
+# Send Requests
+
+```bash
+bash ./create_data.sh
+```
+> Run this one first
+
+```bash
+bash ./get_visit_by_date.sh 
+```
+
+```bash
+bash ./get_patients_visits_in_previous_month.sh
+```
+
+```bash
+bash ./get_patient.sh
+```
+
+
+
