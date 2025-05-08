@@ -109,7 +109,7 @@ bash ./create_data.sh
 > Run this one first
 
 ```bash
-bash ./get_visit_by_date.sh 
+bash ./get_visit_by_date.sh
 ```
 
 ```bash
