@@ -3,6 +3,7 @@ from helix.client import Query
 from helix.types import Payload
 import csv
 from typing import List
+from datetime import datetime
 
 class create_data(Query):
     def __init__(
@@ -12,6 +13,7 @@ class create_data(Query):
         patient_name: str,
         patient_age: int,
         summary: str,
+        date: int,
     ):
         super().__init__()
         self.doctor_name = doctor_name
@@ -19,13 +21,15 @@ class create_data(Query):
         self.patient_name = patient_name
         self.patient_age = patient_age
         self.summary = summary
+        self.date = date
     def query(self) -> List[Payload]:
         return [{
             "doctor_name": self.doctor_name,
             "doctor_city": self.doctor_city,
             "patient_name": self.patient_name,
             "patient_age": self.patient_age,
-            "summary": self.summary
+            "summary": self.summary,
+            "date": self.date,
         }]
     def response(self, response): return response
 
@@ -40,7 +44,8 @@ def read_patient_records(file_path):
                     row['Hospital_City'],
                     row['Doctor_Name'],
                     int(row['Age']),
-                    row['Doctor_Consultation_Desc']
+                    row['Doctor_Consultation_Desc'],
+                    row['Timestamp'],
                 )
                 patient_data.append(patient_tuple)
         return patient_data
@@ -57,11 +62,13 @@ if __name__ == "__main__":
     file_path = "patients.csv"
     patients = read_patient_records(file_path)
     for patient in patients:
-        db.query(create_data(patient[2], patient[1], patient[0], patient[3], patient[4]))
+        dt = datetime.strptime(patient[5], "%Y-%m-%d %H:%M:%S")
+        db.query(create_data(patient[2], patient[1], patient[0], patient[3], patient[4], int(dt.timestamp())))
 
         print(f"Patient Name: {patient[0]}")
         print(f"Hospital City: {patient[1]}")
         print(f"Doctor Name: {patient[2]}")
         print(f"Age: {patient[3]}")
         print(f"Consultation Description: {patient[4]}")
+        print(f"Timestamp: {patient[5]}")
         print("-" * 50)

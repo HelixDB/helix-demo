@@ -2,7 +2,7 @@ import helix
 from helix.client import Query
 from helix.types import Payload
 from typing import List
-import time
+from datetime import datetime, timedelta
 
 class get_visit_by_date(Query):
     def __init__(self, name: str, date: int):
@@ -15,5 +15,9 @@ class get_visit_by_date(Query):
 
 if __name__ == "__main__":
     db = helix.Client(local=True)
-    res = db.query(get_visit_by_date("Owen Brooks", int(time.time() * 1000)))
+
+    date = "2025-04-18 10:45:00"
+    dt = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+
+    res = db.query(get_visit_by_date("Owen Brooks", int(dt.timestamp())))
     print(res)
