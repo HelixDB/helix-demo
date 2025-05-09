@@ -8,6 +8,7 @@ N::Doctor {
     city: String
 }
 
+// Visit Edge between Patient and Doctor
 E::Visit {
     From: Patient,
     To: Doctor,

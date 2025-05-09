@@ -14,9 +14,9 @@ helix install
 
 # Run Queries
 
-> cd into `helix-demo` if you haven't already
-> the queries in `./helixdb-cfg` are the ones being used
+Take a look at the queries in `./helixdb-cfg` to see what is being used.
 
+> cd into `helix-demo` if you haven't already
 ```bash
 helix deploy --local
 ```
